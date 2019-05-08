@@ -28,7 +28,7 @@ A escolha de utilizar Docker, e juntamente o Compose, se dá pela separação de
 
 ----
 
-# CENÁRIOS TESTES
+# CENÁRIOS DE TESTES
 Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis de como a minha aplicação pode falhar. Para isso, gosta de me organizar da maneira abaixo. Todos os cenários em que serão feitos os testes ou são de validação de dado e/ou regras de negócios. 
 
 1. Pagamento por cartão de crédito: (implementado na branch `feature/implementacao-pagamento-cartao`)
