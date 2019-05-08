@@ -33,7 +33,7 @@ A escolha de utilizar Docker, e juntamente o Compose, se dá pela separação de
 ----
 
 # CENÁRIOS TESTES
-Sempre quando entro em um novo projeto, gosto de entender o que pode dar de errado no projeto e/ou na feature que estou desenvolvendo. Para isso, gosta de me organizar da maneira abaixo. Todos os cenários em que serão feitos testes são testes de validação de dado e/ou regras de negócios. 
+Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis de como a minha aplicação pode falhar. Para isso, gosta de me organizar da maneira abaixo. Todos os cenários em que serão feitos os testes ou são de validação de dado e/ou regras de negócios. 
 
 1. Pagamento por cartão de crédito: (implementado na branch `feature/implementacao-pagamento-cartao`)
    1. Todo cartão de crédito deve ter os campos abaixo e que sejam válidos(data correta, tipo de dado correto etc):
@@ -52,7 +52,7 @@ Sempre quando entro em um novo projeto, gosto de entender o que pode dar de erra
       1. Retornos válidos: `SUCESSO` ou `ERRO`
       2. Cenários:
          1. `SUCESSO`: Todos os dados informados são válidos e o retorno do processamento é `SUCESSO`.
-         2. `ERRO`: Todos os dados informados são válidos e o retorno do processamento é `ERRO`
+         2. `ERRO`: Todos os dados informados são válidos e o retorno do processamento é `ERRO`.
    
 # Sugestões
 Seria interessante ter uma métrica ou performance a ser atingida pela API. Por exemplo:
