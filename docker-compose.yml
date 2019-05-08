@@ -1,0 +1,16 @@
+version: '3'
+services:
+  #implementar pagina de checkout /web
+  payments:
+    build: './payments'
+    ports:
+      - "3001:3000"
+    depends_on: 
+      - db
+    environment:
+      - PORT=3000
+      - DB_HOST=mongodb://db/wirecard
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
