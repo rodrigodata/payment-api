@@ -1,12 +1,11 @@
 # Descrição
-Este arquivo tem como objetivo demonstrar o processo de decisões tomadas dentro da aplicação, suas razões e o que poderia ter sido feito de diferente em certos cenários ou caso houvesse mais tempo/requisitos.
+Este arquivo tem como objetivo demonstrar o processo de decisões tomadas dentro da aplicação, suas razões e o que poderia ter sido feito de diferente em certos cenários ou caso houvesse mais tempo/requisitos. Também, juntamente com a timeline de commits deste projeto, mostrar como trabalho no meu dia a dia. 
 
 # Tecnologias 
 ## BACK-END
 Para efetuar este projeto, decidi utilizar `Node.js` ao lado do `Express` como framework. Essa decisão se dá pois tenho mais familiaridade com a linguagem(`JavaScript`) e o framework(`Express`). Em casos reais, a tecnologia que seria utilizada no mesmo projeto teria diversos outros fatores: Aptidão da equipe com a tecnologia/linguagem, requisitos funcionais da aplicação(i.e aplicação deverá suportar 10.000 req/s), Stack já utilizada dentro da empresa(é muito bom ter uma stack mais fechada e consolidade entre equipes). Também havia a possibilidade de utilizar TypeScript juntamente com o Node.js e o Express, porém, não vi necessidade de trazer mais essa complexidade para a aplicação no momento. Pessoalmente, hoje, sou sempre a favor da utilização de TypeScript juntamente com algum ORM, IOC etc. Mas isso irá depender do escopo do projeto e/ou necessidade da equipe para produtividade e qualidade de código.
 
 #### OBSERVAÇÕES BACK-END
-??????????
 
 ----
 
@@ -14,7 +13,6 @@ Para efetuar este projeto, decidi utilizar `Node.js` ao lado do `Express` como f
 Novamente, a escolha se dá por afinidade com a tecnologia e disseminação do banco de dados na comunidade Node.js. A escolha foi o `MongoDB`. Também, se tratando de um escopo de projeto simples e sem quase nenhuma restrição de dados, não vi a necessidade de efetuar este projeto em um banco de dados relacional.
 
 #### Modelagem Banco de Dados
-??????????
 
 ----
 
@@ -23,11 +21,9 @@ A escolha de utilizar Docker, e juntamente o Compose, se dá pela separação de
 
 
 # SCRIPTS
-????? UTILIZAR INSTALL.SH JUNTO COM NPM SCRIPTS ???????
 
 
 # GITFLOW
-???Mapa de Branchs???
 
 
 ----
