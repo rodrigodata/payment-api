@@ -44,12 +44,33 @@ Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis
          3. `ERRO`: Usuário efetou a requisição de processamento de um pagamento aonde os dados fornecidos existem, porém, o campo `card_number` informado não é válido.
          4. `ERRO`: Usuário efetou a requisição de processamento de um pagamento aonde os dados fornecidos existem, porém, o campo `expiration_date` informado não é válido.
          5. `ERRO`: Usuário efetou a requisição de processamento de um pagamento aonde os dados fornecidos existem, porém, o campo `cvv` informado não é válido.
+      
    2. Quando o método de pagamento for cartão, devemos retornar para quem requisitou o processamento de pagamento o status da transação. Seja `SUCESSO` ou `ERRO`:
       1. Retornos válidos: `SUCESSO` ou `ERRO`
       2. Cenários:
          1. `SUCESSO`: Todos os dados informados são válidos e o retorno do processamento é `SUCESSO`.
          2. `ERRO`: Todos os dados informados são válidos e o retorno do processamento é `ERRO`.
-   
+   3. Quando o método de pagamento for cartão, é obrigatório informar a propriedade `card: {}`:
+      1. Cenários:
+         1. `SUCESSO`: Todos os dados da propriedade `card` foram informados e são válidos.
+         2. `ERRO`: O método de pagamento informado é `credit_card`, porém, não foi informado a propriedade `card`.
+2. Pagamento do tipo Boleto:
+   1. Quando o tipo de pagamento for do tipo `boleto`, deverá retornar apenas o numero do mesmo.
+      1. Cenários:
+         1. `SUCESSO`: Usuário efetuou a requisição de processamento de um pagamento aonde os dados fornecidos existem e são válidos.
+         2. `ERRO`: Usuário informou o tipo do pagamento como `boleto`, porém, informou dados de `cartao_de_credito`.
+   2. Quando o método de pagamento for boleto, devemos retornar para quem requisitou o processamento de pagamento o status da transação. Seja `SUCESSO` ou `ERRO`:
+      1. Retornos válidos: `SUCESSO` ou `ERRO`
+      2. Cenários:
+         1. `SUCESSO`: Todos os dados informados são válidos e o retorno do processamento é `SUCESSO`.
+         2. `ERRO`: Todos os dados informados são válidos e o retorno do processamento é `ERRO`.
+
+
+# Observações e opiniões
+## Serviços
+Sempre gosto de ter um serviço principal, responsável por "orquestrar" certas ações dentro da aplicação. Por exemplo, nesta aplicação temos o serviço `PaymentService`, que possui vários métodos sendo a maioria separado para melhor testar regras de negócios. Porém, temos o método "principal" chamado `create`. Esse método é responsável pela criação de um pagamento e também, dentro dele temos as chamadas de outros métodos da mesma classe, aonde é feita a validação de algumas regras de negócio. Entendo que é boa prática que um método faça apenas uma função, e nesse caso meu método `create` faz mais de uma. Porém, na minha opinião, o código fica mais organizado tendo um método principal responsável em chamar validações e verificações de regras de negócio. Há a possibilidade de efetuar essa "chamada" do serviço direto do nosso `controller`, porém, acredito que o `controller` deva ter apenas a função de externalizar nossa aplicação para o mundo HTTP, nada mais.
+
+
 # Sugestões
 Seria interessante ter uma métrica ou performance a ser atingida pela API. Por exemplo:
   - A API deve suportar ~10.000 req/s
