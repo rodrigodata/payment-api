@@ -35,7 +35,8 @@
     "body-parser": "1.18.3",
     "cors": "2.8.5",
     "lodash": "4.17.11",
-    "module-alias": "2.2.0"
+    "module-alias": "2.2.0",
+    "moip-sdk-js": "2.1.1"
   },
   "devDependencies": {
     "mocha": "6.1.4"
