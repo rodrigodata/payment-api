@@ -1,11 +1,11 @@
 /* Importação de Services */
 const PaymentService = require("@services/Payment");
 
-exports.create = (req, res, next) => {
+exports.create = async (req, res, next) => {
   try {
     const body = req.body;
 
-    const _paymentCreated = PaymentService.create(body);
+    const _paymentCreated = await PaymentService.create(body);
 
     return res.status(201).send({
       ..._paymentCreated

@@ -19,7 +19,9 @@ class Payment {
     this.paymentInformation = new PaymentInformationBuilder()
       .setAmount(payment.paymentInformation.amount)
       .setType(payment.paymentInformation.type)
-      .setCardIfNotBoleto(payment.paymentInformation.card)
+      .setBoletoNumber()
+      .setCard(payment.paymentInformation.card)
+      .setStatus()
       .build();
 
     return this;

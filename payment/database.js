@@ -5,14 +5,14 @@ const Mongoose = require("mongoose");
 const AppConstants = require("@constants/App");
 
 if (AppConstants.DB_HOST) {
-  Mongoose.connect(AppConstants.DB_HOST)
+  console.log(AppConstants.DB_HOST);
+  Mongoose.connect(AppConstants.DB_HOST, { useNewUrlParser: true })
     .then(() => {
-      console.info(
-        "Conexão estabelecida com o banco de dados WireCard pelo serviço: Payments"
-      );
+      console.log("vrrrrrrrrrrrrrrrrrau");
     })
     .catch(err => {
-      console.error(err.errors ? err.errors[0].err : err.errors);
+      console.log(JSON.stringify(err));
+      //console.error(err.errors ? err.errors[0].err : err.errors);
     });
 } else {
   console.error(

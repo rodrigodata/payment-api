@@ -14,7 +14,7 @@ class PaymentInformationBuilder {
     this._type = type;
     return this;
   }
-  setCardIfNotBoleto(card) {
+  setCard(card) {
     /* Garantimos que apenas vamos enviar as informações de cartão de crédito se o tipo de pagamento for != boleto. */
     if (!this.isBoleto) {
       this._card = new CardBuilder()
@@ -25,6 +25,20 @@ class PaymentInformationBuilder {
         .build();
     }
 
+    return this;
+  }
+
+  setBoletoNumber() {
+    if (this.isBoleto) {
+      this._boletoNumber =
+        "03399.63290 64000.000006 00125.201020 4 56140000017832";
+    }
+
+    return this;
+  }
+
+  setStatus() {
+    this._status = "SUCCESS";
     return this;
   }
 
@@ -43,6 +57,14 @@ class PaymentInformationBuilder {
 
   get amount() {
     return this._amount;
+  }
+
+  get boletoNumber() {
+    return this._boletoNumber;
+  }
+
+  get status() {
+    return this._status;
   }
 
   get isBoleto() {

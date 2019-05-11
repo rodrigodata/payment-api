@@ -1,5 +1,9 @@
+/* Importação de dependencias */
+const Mongoose = require("mongoose");
+
 /* Importação de Models */
 const PaymentType = require("@models/payment_type/PaymentType");
+const Payment = Mongoose.model("Payment");
 
 /* Importação de Builders */
 const PaymentBuilder = require("@builders/Payment");
@@ -11,14 +15,32 @@ const CardService = require("./Card");
 const ErrorHandling = require("@constants/ErrorHandling");
 
 class PaymentService {
-  create(payment) {
+  create(_payment) {
     try {
-      this.validateCardInformation(payment.paymentInformation);
-      this.validationTypeBoletoWithCardInformation(payment);
-      this.validationType(payment.paymentInformation.type);
-      const _payment = new PaymentBuilder().build(payment);
+      const _this = this;
+      return new Promise(function(resolve, reject) {
+        /* Validação */
+        _this.validateCardInformation(_payment.paymentInformation);
+        _this.validationTypeBoletoWithCardInformation(_payment);
+        _this.validationType(_payment.paymentInformation.type);
 
-      return _payment;
+        /* Build & Model */
+        const _paymentBuild = new PaymentBuilder().build(_payment);
+        const payment = new Payment();
+
+        /* Assign para salvar conforme model */
+        payment.modelAssignment(_paymentBuild);
+
+        payment
+          .save()
+          .then(paymentCreated => {
+            console.log(paymentCreated);
+            resolve(paymentCreated);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
     } catch (error) {
       throw new Error(error);
     }
