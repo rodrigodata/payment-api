@@ -9,4 +9,6 @@ router
   .get()
   .post(PaymentController.create);
 
+router.route("/payment/:id").get(PaymentController.findById);
+
 module.exports = router;

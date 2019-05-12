@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 /* Desabilitar headers etag e x-powered-by */
-//app.disable("etag").disable("etag");
+app.disable("etag").disable("etag");
 
 /* Configuração Express */
 app.use(cors());

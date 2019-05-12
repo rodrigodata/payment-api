@@ -8,11 +8,10 @@ if (AppConstants.DB_HOST) {
   console.log(AppConstants.DB_HOST);
   Mongoose.connect(AppConstants.DB_HOST, { useNewUrlParser: true })
     .then(() => {
-      console.log("vrrrrrrrrrrrrrrrrrau");
+      console.info("Banco de dados WIRECARD conectado ao serviço PAYMENT");
     })
     .catch(err => {
-      console.log(JSON.stringify(err));
-      //console.error(err.errors ? err.errors[0].err : err.errors);
+      console.error(JSON.stringify(err));
     });
 } else {
   console.error(

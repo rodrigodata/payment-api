@@ -9,7 +9,10 @@ services:
       - db
     environment:
       - PORT=3000
+      - DB_HOST=mongodb://db/wirecard
+
   db:
-    image: mongo:latest
+    image: mongo
     ports:
       - "27017:27017"
+  

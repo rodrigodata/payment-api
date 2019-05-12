@@ -15,32 +15,29 @@ const CardService = require("./Card");
 const ErrorHandling = require("@constants/ErrorHandling");
 
 class PaymentService {
-  create(_payment) {
+  async create(_payment) {
     try {
       const _this = this;
-      return new Promise(function(resolve, reject) {
-        /* Validação */
-        _this.validateCardInformation(_payment.paymentInformation);
-        _this.validationTypeBoletoWithCardInformation(_payment);
-        _this.validationType(_payment.paymentInformation.type);
+      /* Validação */
+      _this.validateCardInformation(_payment.paymentInformation);
+      _this.validationTypeBoletoWithCardInformation(_payment);
+      _this.validationType(_payment.paymentInformation.type);
 
-        /* Build & Model */
-        const _paymentBuild = new PaymentBuilder().build(_payment);
-        const payment = new Payment();
+      /* Build & Model */
+      const _paymentBuild = new PaymentBuilder().build(_payment);
+      const payment = new Payment();
 
-        /* Assign para salvar conforme model */
-        payment.modelAssignment(_paymentBuild);
+      /* Assign para salvar conforme model */
+      payment.modelAssignment(_paymentBuild);
 
-        payment
-          .save()
-          .then(paymentCreated => {
-            console.log(paymentCreated);
-            resolve(paymentCreated);
-          })
-          .catch(err => {
-            reject(err);
-          });
-      });
+      return payment
+        .save()
+        .then(paymentCreated => {
+          return paymentCreated;
+        })
+        .catch(err => {
+          throw err;
+        });
     } catch (error) {
       throw new Error(error);
     }
