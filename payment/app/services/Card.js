@@ -1,31 +1,29 @@
 /* Importação de dependencias */
-const MoipSdk = require("moip-sdk-js");
+const { MoipValidator } = require("moip-sdk-js");
 
 /* Importação de Constants */
 const ErrorHandling = require("@constants/ErrorHandling");
+const AppConstants = require("@constants/App");
 
 class CardService {
   validateCardInformation(card) {
-    try {
-      this.validateNumber(card.number);
-      this.validateExpirationDate(card.expirationDate);
-      this.validateCvv(card.number, card.cvv);
-    } catch (error) {
-      throw new Error(error);
-    }
+    this.validateNumber(card.number);
+    this.validateExpirationDate(card.expirationDate);
+    this.validateCvv(card.number, card.cvv);
   }
 
   /**
    * Método responsável pela validação do numero informado do cartão de crédito.
    */
   validateNumber(number) {
-    if (!MoipSdk.MoipValidator.isValidNumber(number))
-      throw Error(
+    if (!MoipValidator.isValidNumber(number))
+      throw new Error(
         JSON.stringify({
           message: ErrorHandling.CARD_ERROR_HANDLING.NUMBER_INVALID,
           errors: {
             message: ErrorHandling.CARD_ERROR_HANDLING.NUMBER_INVALID,
-            statusCode: 500
+            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
@@ -38,13 +36,14 @@ class CardService {
   validateExpirationDate(expirationDate) {
     const [month, year] = expirationDate.split("/");
 
-    if (!MoipSdk.MoipValidator.isExpiryDateValid(month, year))
-      throw Error(
+    if (!MoipValidator.isExpiryDateValid(month, year))
+      throw new Error(
         JSON.stringify({
           message: ErrorHandling.CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
           errors: {
             message: ErrorHandling.CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
-            statusCode: 500
+            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
@@ -54,13 +53,14 @@ class CardService {
    * Verificar se o CVV informado está no range esperado.
    */
   validateCvv(cardNumber, cvv) {
-    if (!MoipSdk.MoipValidator.isSecurityCodeValid(cardNumber, cvv))
-      throw Error(
+    if (!MoipValidator.isSecurityCodeValid(cardNumber, cvv))
+      throw new Error(
         JSON.stringify({
           message: ErrorHandling.CARD_ERROR_HANDLING.CVV_INVALID,
           errors: {
             message: ErrorHandling.CARD_ERROR_HANDLING.CVV_INVALID,
-            statusCode: 500
+            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
@@ -68,12 +68,13 @@ class CardService {
 
   validateHolderName(holderName) {
     if (!holderName || holderName.length == 0) {
-      throw Error(
+      throw new Error(
         JSON.stringify({
           message: ErrorHandling.CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
           errors: {
             message: ErrorHandling.CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
-            statusCode: 500
+            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );

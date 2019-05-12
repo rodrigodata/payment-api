@@ -15,7 +15,7 @@ exports.findById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const _payment = await PaymentService.findById(id);
-    return res.status(200).send(..._payment);
+    return res.status(200).send(_payment);
   } catch (error) {
     next(error);
   }

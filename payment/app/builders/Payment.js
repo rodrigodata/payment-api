@@ -6,21 +6,23 @@ const ClientBuilder = require("@builders/Client");
 class Payment {
   build(payment) {
     /* Montamos a seção Client */
-    this.client = new ClientBuilder().setId(payment.client.id).build();
+    this.client = new ClientBuilder().setId(payment.idClient).build();
 
     /* Montamos a seção Buyer */
     this.buyer = new BuyerBuilder()
-      .setName(payment.buyer.name)
-      .setEmail(payment.buyer.email)
-      .setCpf(payment.buyer.cpf)
+      .setName(payment.nameBuyer)
+      .setEmail(payment.emailBuyer)
+      .setCpf(payment.cpfBuyer)
       .build();
 
     /* Montamos a seção PaymentInformation */
     this.paymentInformation = new PaymentInformationBuilder()
-      .setAmount(payment.paymentInformation.amount)
-      .setType(payment.paymentInformation.type)
-      .setBoletoNumber()
-      .setCard(payment.paymentInformation.card)
+      .setAmount(payment.amount)
+      .setType(payment.type)
+      .setBoletoNumber(payment.boletoNumber)
+      .setCard(
+        payment.cardInformation ? JSON.parse(payment.cardInformation) : {}
+      )
       .setStatus()
       .build();
 

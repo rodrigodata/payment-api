@@ -13,50 +13,45 @@ const CardService = require("./Card");
 
 /* Importação de Constants */
 const ErrorHandling = require("@constants/ErrorHandling");
+const AppConstants = require("@constants/App");
 
 class PaymentService {
   async create(_payment) {
-    try {
-      /* Validação */
-      this.validateCardInformation(_payment.paymentInformation);
-      this.validationTypeBoletoWithCardInformation(_payment);
-      this.validationType(_payment.paymentInformation.type);
+    /* Validação */
+    this.validateCardInformation(_payment.paymentInformation);
+    this.validationTypeBoletoWithCardInformation(_payment);
+    this.validationType(_payment.paymentInformation.type);
 
-      /* Build & Model */
-      const _paymentBuild = new PaymentBuilder().build(_payment);
-      const payment = new Payment();
+    /* Build & Model */
+    const payment = new Payment();
 
-      /* Assign para salvar conforme model */
-      payment.modelAssignment(_paymentBuild);
+    /* Assign para salvar conforme model */
+    payment.modelAssignment(_payment);
 
-      payment
-        .save()
-        .then(paymentCreated => {
-          return paymentCreated;
-        })
-        .catch(err => {
-          throw err;
-        });
-    } catch (error) {
-      throw new Error(error);
-    }
+    return payment
+      .save()
+      .then(paymentCreated => {
+        return paymentCreated.formatToJSON();
+      })
+      .catch(err => {
+        throw err;
+      });
   }
 
+  /**
+   *
+   * @param {*} id
+   * Método responsável por buscar pagamento por id dentro do nosso banco de dados.
+   */
   async findById(id) {
-    try {
-      const payment = new Payment();
-
-      payment
-        .findById(id)
-        .then(_payment => {
-          return _payment;
-        })
-        .catch(err => {
-          throw err;
-        });
-    } catch (error) {
-      throw new Error(error);
-    }
+    return Payment.findById(id)
+      .then(_payment => {
+        const _paymentBuild = new PaymentBuilder().build(_payment);
+        return _paymentBuild;
+      })
+      .catch(err => {
+        throw err;
+      });
   }
 
   /**
@@ -71,7 +66,7 @@ class PaymentService {
       payment.paymentInformation.type.toLowerCase() == PaymentType.BOLETO
     ) {
       /* TODO: Implementar middleware com erros de regras de negocio */
-      throw Error(
+      throw new Error(
         JSON.stringify({
           message:
             ErrorHandling.PAYMENT_ERROR_HANDLING
@@ -80,7 +75,8 @@ class PaymentService {
             message:
               ErrorHandling.PAYMENT_ERROR_HANDLING
                 .TYPE_BOLETO_WITH_CARD_INFORMATION,
-            statusCode: 500
+            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
@@ -95,12 +91,13 @@ class PaymentService {
   validationType(type) {
     if (!Object.values(PaymentType).includes(type.toLowerCase())) {
       /* TODO: Implementar middleware com erros de regras de negocio */
-      throw Error(
+      throw new Error(
         JSON.stringify({
           message: ErrorHandling.PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
           errors: {
             message: ErrorHandling.PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
-            statusCode: 500
+            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );

@@ -1,5 +1,6 @@
 /* Importação de Models */
 const PaymentType = require("@models/payment_type/PaymentType");
+const PaymentStatus = require("@models/payment_status/PaymentStatus");
 const PaymentInformation = require("@models/payment_information/PaymentInformation");
 
 /* Importação de Builders */
@@ -28,17 +29,18 @@ class PaymentInformationBuilder {
     return this;
   }
 
-  setBoletoNumber() {
+  setBoletoNumber(
+    boletoNumber = "03399.63290 64000.000006 00125.201020 4 56140000017832"
+  ) {
     if (this.isBoleto) {
-      this._boletoNumber =
-        "03399.63290 64000.000006 00125.201020 4 56140000017832";
+      this._boletoNumber = boletoNumber;
     }
 
     return this;
   }
 
   setStatus() {
-    this._status = "SUCCESS";
+    this._status = PaymentStatus.SUCCESS;
     return this;
   }
 
