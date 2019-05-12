@@ -13,6 +13,7 @@ Para efetuar este projeto, decidi utilizar `Node.js` ao lado do `Express` como f
 Novamente, a escolha se dá por afinidade com a tecnologia e disseminação do banco de dados na comunidade Node.js. A escolha foi o `MongoDB`. Também, se tratando de um escopo de projeto simples e sem quase nenhuma restrição de dados, não vi a necessidade de efetuar este projeto em um banco de dados relacional.
 
 #### Modelagem Banco de Dados
+Para esta aplicação, efetuamos a criação de apenas uma coleção `payment`. Para todos outros "models" dentro da aplicação, se dá a utilização de builders para a sua construção. Sendo um banco de dados não relacional, não haveria necessidade de criação de suas coleções.
 
 ----
 
@@ -20,13 +21,21 @@ Novamente, a escolha se dá por afinidade com a tecnologia e disseminação do b
 A escolha de utilizar Docker, e juntamente o Compose, se dá pela separação de código do banco de dados e o código da aplicação em si. Além, é claro, da produtividade e segurança que o Docker proporciona ao desenvolvedor. Entendo que para um projeto deste escopo, efetuar essa separação possa ser uma estratégia exagerada. Porém, sempre quando utilizo Docker juntamente com um banco de dados que não seja DBaaS, gosto de fazer essa separação dentro do meu código.
 
 
-# SCRIPTS
+# STATUS CODE
+Está aplicação tem como regra utilizar os seguintes status code:
 
-
-# GITFLOW
-
-
-----
+1. `200` - Requisição efetuada com sucesso.
+   1. Este status é utilizado no endpoint de consulta de pagamentos por id.
+      1. `[GET] /api/v1/payment/:id`
+2. `201` - Criação efetuada com sucesso.
+   1. Este status é utilizado para requisições de sucesso em criação de pagamentos.
+      1. `[POST] /api/v1/payment`
+3. `409` - Erro em validação de regras de negócio da aplicação de acordo com informações enviadas para a API.
+   1. Este status é utilizado dentro da aplicação caso haja algum erro de regra de negócio.
+      1. `[POST] /api/v1/payment`
+4. `500` - Erro da aplicação
+   1. Este status é configurado para todos os outros erros dentro da aplicação que não foram tratados ou erros fora do controle de tratamento.
+      1. `*`
 
 # CENÁRIOS DE TESTES
 Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis de como a minha aplicação pode falhar. Para isso, gosta de me organizar da maneira abaixo. Todos os cenários em que serão feitos os testes ou são de validação de dado e/ou regras de negócios. 
@@ -54,6 +63,10 @@ Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis
       1. Cenários:
          1. `SUCESSO`: Todos os dados da propriedade `card` foram informados e são válidos.
          2. `ERRO`: O método de pagamento informado é `credit_card`, porém, não foi informado a propriedade `card`.
+   4. Quando o método de pagamento é `boleto`, não deve ser informado informações de cartão de crédito:
+      1. Cenários:
+         1. `SUCESSO`: Método de pagamento informado `boleto`, e não há informação de cartão de crédito.
+         2. `ERRO`: Método de pagamento informado `boleto`, porém, informado dados de cartão de crédito.
 2. Pagamento do tipo Boleto:
    1. Quando o tipo de pagamento for do tipo `boleto`, deverá retornar apenas o numero do mesmo.
       1. Cenários:
