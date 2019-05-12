@@ -17,11 +17,10 @@ const ErrorHandling = require("@constants/ErrorHandling");
 class PaymentService {
   async create(_payment) {
     try {
-      const _this = this;
       /* Validação */
-      _this.validateCardInformation(_payment.paymentInformation);
-      _this.validationTypeBoletoWithCardInformation(_payment);
-      _this.validationType(_payment.paymentInformation.type);
+      this.validateCardInformation(_payment.paymentInformation);
+      this.validationTypeBoletoWithCardInformation(_payment);
+      this.validationType(_payment.paymentInformation.type);
 
       /* Build & Model */
       const _paymentBuild = new PaymentBuilder().build(_payment);
@@ -30,10 +29,27 @@ class PaymentService {
       /* Assign para salvar conforme model */
       payment.modelAssignment(_paymentBuild);
 
-      return payment
+      payment
         .save()
         .then(paymentCreated => {
           return paymentCreated;
+        })
+        .catch(err => {
+          throw err;
+        });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async findById(id) {
+    try {
+      const payment = new Payment();
+
+      payment
+        .findById(id)
+        .then(_payment => {
+          return _payment;
         })
         .catch(err => {
           throw err;
