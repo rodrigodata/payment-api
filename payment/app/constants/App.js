@@ -1,7 +1,7 @@
-/* Constantes da aplicação */
+/* Application Constants */
 const DB_HOST = process.env.DB_HOST || "mongodb://db:27017/wirecard";
 
-/* Constantes com tipos e código de status http */
+/* Http Status Code Constants */
 const ERRORS = {
   BUSINESS_LOGIC: {
     TYPE: "BUSINESS_LOGIC_ERROR",
@@ -9,7 +9,21 @@ const ERRORS = {
   }
 };
 
+/* Payment methods types supported */
+const PAYMENT_TYPES = {
+  CREDIT_CARD: "credit_card",
+  BOLETO: "boleto"
+};
+
+/* Payment status */
+const PAYMENT_STATUS = {
+  SUCCESS: "SUCCESS",
+  ERROR: "ERROR"
+};
+
 module.exports = {
   DB_HOST,
-  ERRORS
+  ERRORS,
+  PAYMENT_TYPES,
+  PAYMENT_STATUS
 };

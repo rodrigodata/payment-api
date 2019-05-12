@@ -1,7 +1,18 @@
-/* Status disponiveis para um pagamento */
-const PAYMENT_STATUS = {
-  SUCCESS: "SUCCESS",
-  ERROR: "ERROR"
-};
+/* Import Constants */
+const { PAYMENT_STATUS } = require("@constants/App");
 
-module.exports = PAYMENT_STATUS;
+class PaymentStatus {
+  constructor() {
+    this.setStatus();
+  }
+  setStatus() {
+    this._status = PAYMENT_STATUS;
+    return this;
+  }
+
+  get status() {
+    return this._status;
+  }
+}
+
+module.exports = new PaymentStatus();

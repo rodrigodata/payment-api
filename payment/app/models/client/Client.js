@@ -1,4 +1,8 @@
 class Client {
+  /**
+   *
+   * @param {*} client
+   */
   constructor(client) {
     this.id = client.id;
   }

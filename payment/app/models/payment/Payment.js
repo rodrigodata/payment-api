@@ -1,11 +1,12 @@
-/* Importação de Dependencias */
+/* Import Dependencies */
 const Mongoose = require("mongoose");
+/* Supporting data_type Long for Mongoose */
 require("mongoose-long")(Mongoose);
 
-/* Importação de builders */
+/* Import Builders */
 const PaymentInformationBuilder = require("@builders/PaymentInformation");
 
-/* Importação de Models */
+/* Import Models */
 const PaymentType = require("@models/payment_type/PaymentType");
 
 const PaymentSchema = new Mongoose.Schema({
@@ -64,8 +65,8 @@ PaymentSchema.methods.modelAssignment = function(payment) {
   this.status = paymentInformation.status;
 };
 
-PaymentSchema.methods.formatToJSON = function(response = {}) {
-  if (this.type == PaymentType.BOLETO) {
+PaymentSchema.methods.formatToJSON = function() {
+  if (this.type == PaymentType.types.BOLETO) {
     return {
       boletoNumber: this.boletoNumber
     };

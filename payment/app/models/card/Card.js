@@ -1,4 +1,8 @@
 class Card {
+  /**
+   *
+   * @param {*} card
+   */
   constructor(card) {
     this.holderName = card.holderName;
     this.number = card.number;

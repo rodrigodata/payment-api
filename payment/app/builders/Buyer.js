@@ -1,17 +1,29 @@
-/* Importação de Models */
+/* Import Models */
 const Buyer = require("@models/buyer/Buyer");
 
 class BuyerBuilder {
+  /**
+   *
+   * @param {*} name
+   */
   setName(name) {
     this._name = name;
     return this;
   }
 
+  /**
+   *
+   * @param {*} email
+   */
   setEmail(email) {
     this._email = email;
     return this;
   }
 
+  /**
+   *
+   * @param {*} cpf
+   */
   setCpf(cpf) {
     this._cpf = cpf;
     return this;

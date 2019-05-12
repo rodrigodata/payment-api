@@ -1,18 +1,35 @@
+/* Import Models */
 const Card = require("@models/card/Card");
 
 class CardBuilder {
+  /**
+   *
+   * @param {*} holderName
+   */
   setHolderName(holderName) {
     this._holderName = holderName;
     return this;
   }
+  /**
+   *
+   * @param {*} number
+   */
   setNumber(number) {
     this._number = number;
     return this;
   }
+  /**
+   *
+   * @param {*} expirationDate
+   */
   setExpirationDate(expirationDate) {
     this._expirationDate = expirationDate;
     return this;
   }
+  /**
+   *
+   * @param {*} cvv
+   */
   setCvv(cvv) {
     this._cvv = cvv;
     return this;

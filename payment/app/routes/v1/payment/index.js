@@ -1,4 +1,4 @@
-/* Importação de todas as rotas do arquivo Payment. */
+/* Importing all Payment routes */
 const router = require("./Payment");
 
 module.exports = router;

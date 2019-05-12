@@ -3,7 +3,17 @@ exports.error = (err, req, res, next) => {
     let _errorMessage = isValidStringJSON(err.message)
       ? JSON.parse(err.message)
       : err.message;
-    return res.status(_errorMessage.errors.statusCode).send(_errorMessage);
+    if (_errorMessage.errors && _errorMessage.errors.statusCode) {
+      return res
+        .status(
+          _errorMessage.errors.statusCode
+            ? _errorMessage.errors.statusCode
+            : 500
+        )
+        .send(_errorMessage);
+    } else {
+      return res.status(500).send(_errorMessage);
+    }
   }
 };
 

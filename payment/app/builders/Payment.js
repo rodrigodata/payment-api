@@ -1,21 +1,25 @@
-/* Importação de Builders */
+/* Import Builders */
 const PaymentInformationBuilder = require("@builders/PaymentInformation");
 const BuyerBuilder = require("@builders/Buyer");
 const ClientBuilder = require("@builders/Client");
 
 class Payment {
+  /**
+   *
+   * @param {*} payment
+   */
   build(payment) {
-    /* Montamos a seção Client */
+    /* Section Client */
     this.client = new ClientBuilder().setId(payment.idClient).build();
 
-    /* Montamos a seção Buyer */
+    /* Section Buyer */
     this.buyer = new BuyerBuilder()
       .setName(payment.nameBuyer)
       .setEmail(payment.emailBuyer)
       .setCpf(payment.cpfBuyer)
       .build();
 
-    /* Montamos a seção PaymentInformation */
+    /* Section PaymentInformation */
     this.paymentInformation = new PaymentInformationBuilder()
       .setAmount(payment.amount)
       .setType(payment.type)

@@ -4,7 +4,7 @@ require("module-alias/register");
 /* Importacao de dependencias */
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+const { urlencoded, json } = require("body-parser");
 const { errors } = require("celebrate");
 
 /* Inicialização da aplicação express */
@@ -18,8 +18,8 @@ app.disable("etag").disable("etag");
 
 /* Configuração Express */
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(urlencoded({ extended: false }));
+app.use(json());
 
 /* Importacao conexao banco de dados */
 require("./database");

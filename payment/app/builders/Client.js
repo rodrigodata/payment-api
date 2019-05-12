@@ -1,7 +1,11 @@
-/* Importação de Models */
+/* Import Models */
 const Client = require("@models/client/Client");
 
 class ClientBuilder {
+  /**
+   *
+   * @param {*} id
+   */
   setId(id) {
     this._id = id;
     return this;

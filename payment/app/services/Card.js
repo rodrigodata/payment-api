@@ -1,37 +1,53 @@
-/* Importação de dependencias */
+/* Import Dependencies */
 const { MoipValidator } = require("moip-sdk-js");
 
-/* Importação de Constants */
-const ErrorHandling = require("@constants/ErrorHandling");
-const AppConstants = require("@constants/App");
+/* Import Constants */
+const { CARD_ERROR_HANDLING } = require("@constants/ErrorHandling");
+const { ERRORS } = require("@constants/App");
 
 class CardService {
   validateCardInformation(card) {
+    this.validateCardObject(card);
     this.validateNumber(card.number);
     this.validateExpirationDate(card.expirationDate);
     this.validateCvv(card.number, card.cvv);
   }
 
-  /**
-   * Método responsável pela validação do numero informado do cartão de crédito.
-   */
-  validateNumber(number) {
-    if (!MoipValidator.isValidNumber(number))
+  validateCardObject(card) {
+    if (!card)
       throw new Error(
         JSON.stringify({
-          message: ErrorHandling.CARD_ERROR_HANDLING.NUMBER_INVALID,
+          message: CARD_ERROR_HANDLING.CARD_INVALID,
           errors: {
-            message: ErrorHandling.CARD_ERROR_HANDLING.NUMBER_INVALID,
-            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
+            message: CARD_ERROR_HANDLING.CARD_INVALID,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
   }
 
   /**
-   * Método responsável pela validação da data de vencimento informada do cartão de crédito.
-   * Aqui podemos validar se a data informada está vencida ou não.
+   * @param {*} number
+   * Method responsible for credit card number validation
+   */
+  validateNumber(number) {
+    if (!MoipValidator.isValidNumber(number))
+      throw new Error(
+        JSON.stringify({
+          message: CARD_ERROR_HANDLING.NUMBER_INVALID,
+          errors: {
+            message: CARD_ERROR_HANDLING.NUMBER_INVALID,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
+          }
+        })
+      );
+  }
+
+  /**
+   * @param {*} expirationDate
+   * Method responsible for credit card expiration date validation
    */
   validateExpirationDate(expirationDate) {
     const [month, year] = expirationDate.split("/");
@@ -39,42 +55,48 @@ class CardService {
     if (!MoipValidator.isExpiryDateValid(month, year))
       throw new Error(
         JSON.stringify({
-          message: ErrorHandling.CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
+          message: CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
           errors: {
-            message: ErrorHandling.CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
-            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
+            message: CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
   }
 
   /**
-   * Verificar se o CVV informado está no range esperado.
+   * @param {*} cardNumber
+   * @param {*} cvv
+   * Method responsible for credit card security code validation
    */
   validateCvv(cardNumber, cvv) {
     if (!MoipValidator.isSecurityCodeValid(cardNumber, cvv))
       throw new Error(
         JSON.stringify({
-          message: ErrorHandling.CARD_ERROR_HANDLING.CVV_INVALID,
+          message: CARD_ERROR_HANDLING.CVV_INVALID,
           errors: {
-            message: ErrorHandling.CARD_ERROR_HANDLING.CVV_INVALID,
-            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
+            message: CARD_ERROR_HANDLING.CVV_INVALID,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
   }
 
+  /**
+   * @param {*} holderName
+   * Method responsible for credit card holder name validation
+   */
   validateHolderName(holderName) {
     if (!holderName || holderName.length == 0) {
       throw new Error(
         JSON.stringify({
-          message: ErrorHandling.CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
+          message: CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
           errors: {
-            message: ErrorHandling.CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
-            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
+            message: CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );

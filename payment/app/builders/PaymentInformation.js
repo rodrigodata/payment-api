@@ -1,22 +1,34 @@
-/* Importação de Models */
+/* Import Models */
 const PaymentType = require("@models/payment_type/PaymentType");
 const PaymentStatus = require("@models/payment_status/PaymentStatus");
 const PaymentInformation = require("@models/payment_information/PaymentInformation");
 
-/* Importação de Builders */
+/* Import Builders */
 const CardBuilder = require("@builders/Card");
 
 class PaymentInformationBuilder {
+  /**
+   *
+   * @param {*} amount
+   */
   setAmount(amount) {
     this._amount = amount;
     return this;
   }
+  /**
+   *
+   * @param {*} type
+   */
   setType(type) {
     this._type = type;
     return this;
   }
+  /**
+   *
+   * @param {*} card
+   */
   setCard(card) {
-    /* Garantimos que apenas vamos enviar as informações de cartão de crédito se o tipo de pagamento for != boleto. */
+    /* We make sure that we only want credit card information if our type != boleto. */
     if (!this.isBoleto) {
       this._card = new CardBuilder()
         .setHolderName(card.holderName)
@@ -29,7 +41,12 @@ class PaymentInformationBuilder {
     return this;
   }
 
+  /**
+   *
+   * @param {*} boletoNumber
+   */
   setBoletoNumber(
+    /* default boleto number mock */
     boletoNumber = "03399.63290 64000.000006 00125.201020 4 56140000017832"
   ) {
     if (this.isBoleto) {
@@ -40,7 +57,7 @@ class PaymentInformationBuilder {
   }
 
   setStatus() {
-    this._status = PaymentStatus.SUCCESS;
+    this._status = PaymentStatus.status.SUCCESS;
     return this;
   }
 
@@ -70,7 +87,7 @@ class PaymentInformationBuilder {
   }
 
   get isBoleto() {
-    return this._type == PaymentType.BOLETO;
+    return this._type == PaymentType.types.BOLETO;
   }
 }
 

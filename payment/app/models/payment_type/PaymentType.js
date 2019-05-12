@@ -1,7 +1,18 @@
-/* Tipos de pagamentos disponiveis */
-const PAYMENT_TYPE = {
-  CREDIT_CARD: "credit_card",
-  BOLETO: "boleto"
-};
+/* Import Constants */
+const { PAYMENT_TYPES } = require("@constants/App");
 
-module.exports = PAYMENT_TYPE;
+class PaymentType {
+  constructor() {
+    this.setTypes();
+  }
+  setTypes() {
+    this._types = PAYMENT_TYPES;
+    return this;
+  }
+
+  get types() {
+    return this._types;
+  }
+}
+
+module.exports = new PaymentType();

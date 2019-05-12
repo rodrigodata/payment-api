@@ -1,12 +1,14 @@
 /* Importação de dependencias */
-const Mongoose = require("mongoose");
+const { connect } = require("mongoose");
 
 /* Seta variável de ambiente com string do banco de dados */
-const AppConstants = require("@constants/App");
+const { DB_HOST } = require("@constants/App");
 
-if (AppConstants.DB_HOST) {
-  console.log(AppConstants.DB_HOST);
-  Mongoose.connect(AppConstants.DB_HOST, { useNewUrlParser: true })
+if (DB_HOST) {
+  connect(
+    DB_HOST,
+    { useNewUrlParser: true }
+  )
     .then(() => {
       console.info("Banco de dados WIRECARD conectado ao serviço PAYMENT");
     })

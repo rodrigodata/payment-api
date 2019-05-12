@@ -1,9 +1,9 @@
 /* Importação de dependencias */
-const Mongoose = require("mongoose");
+const { model } = require("mongoose");
 
 /* Importação de Models */
 const PaymentType = require("@models/payment_type/PaymentType");
-const Payment = Mongoose.model("Payment");
+const Payment = model("Payment");
 
 /* Importação de Builders */
 const PaymentBuilder = require("@builders/Payment");
@@ -12,15 +12,15 @@ const PaymentBuilder = require("@builders/Payment");
 const CardService = require("./Card");
 
 /* Importação de Constants */
-const ErrorHandling = require("@constants/ErrorHandling");
-const AppConstants = require("@constants/App");
+const { PAYMENT_ERROR_HANDLING } = require("@constants/ErrorHandling");
+const { ERRORS } = require("@constants/App");
 
 class PaymentService {
   async create(_payment) {
     /* Validação */
-    this.validateCardInformation(_payment.paymentInformation);
-    this.validationTypeBoletoWithCardInformation(_payment);
     this.validationType(_payment.paymentInformation.type);
+    this.validationTypeBoletoWithCardInformation(_payment);
+    this.validateCardInformation(_payment.paymentInformation);
 
     /* Build & Model */
     const payment = new Payment();
@@ -46,11 +46,15 @@ class PaymentService {
   async findById(id) {
     return Payment.findById(id)
       .then(_payment => {
-        const _paymentBuild = new PaymentBuilder().build(_payment);
-        return _paymentBuild;
+        if (_payment) {
+          const _paymentBuild = new PaymentBuilder().build(_payment);
+          return _paymentBuild;
+        } else {
+          return {};
+        }
       })
       .catch(err => {
-        throw err;
+        return {};
       });
   }
 
@@ -63,20 +67,15 @@ class PaymentService {
   validationTypeBoletoWithCardInformation(payment) {
     if (
       payment.paymentInformation.card &&
-      payment.paymentInformation.type.toLowerCase() == PaymentType.BOLETO
+      payment.paymentInformation.type.toLowerCase() == PaymentType.types.BOLETO
     ) {
-      /* TODO: Implementar middleware com erros de regras de negocio */
       throw new Error(
         JSON.stringify({
-          message:
-            ErrorHandling.PAYMENT_ERROR_HANDLING
-              .TYPE_BOLETO_WITH_CARD_INFORMATION,
+          message: PAYMENT_ERROR_HANDLING.TYPE_BOLETO_WITH_CARD_INFORMATION,
           errors: {
-            message:
-              ErrorHandling.PAYMENT_ERROR_HANDLING
-                .TYPE_BOLETO_WITH_CARD_INFORMATION,
-            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
+            message: PAYMENT_ERROR_HANDLING.TYPE_BOLETO_WITH_CARD_INFORMATION,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
@@ -89,15 +88,14 @@ class PaymentService {
    * Método responsável por verificar se o tipo de pagamento é suportado pela aplicação
    */
   validationType(type) {
-    if (!Object.values(PaymentType).includes(type.toLowerCase())) {
-      /* TODO: Implementar middleware com erros de regras de negocio */
+    if (!Object.values(PaymentType.types).includes(type.toLowerCase())) {
       throw new Error(
         JSON.stringify({
-          message: ErrorHandling.PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
+          message: PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
           errors: {
-            message: ErrorHandling.PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
-            type: AppConstants.ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: AppConstants.ERRORS.BUSINESS_LOGIC.STATUS_CODE
+            message: PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
+            type: ERRORS.BUSINESS_LOGIC.TYPE,
+            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
           }
         })
       );
@@ -110,7 +108,7 @@ class PaymentService {
    * Método responsável por efetuar chamada ao serviço CardService e efetuar validação dos dados do cartão de crédito informado
    */
   validateCardInformation(paymentInformation) {
-    if (paymentInformation.type != PaymentType.BOLETO) {
+    if (paymentInformation.type != PaymentType.types.BOLETO) {
       CardService.validateCardInformation(paymentInformation.card);
     }
   }

@@ -1,4 +1,4 @@
-/* */
+/* Import Dependencies */
 const { Joi } = require("celebrate");
 
 const PaymentSchemaValidation = {
@@ -15,7 +15,9 @@ const PaymentSchemaValidation = {
           .required()
       }),
       buyer: Joi.object().keys({
-        name: Joi.string().required(),
+        name: Joi.string()
+          .uppercase()
+          .required(),
         email: Joi.string().email(),
         cpf: Joi.string()
           .regex(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/)
@@ -27,7 +29,7 @@ const PaymentSchemaValidation = {
           .min(1)
           .max(9999999999),
         type: Joi.string()
-          .valid("boleto", "credit_card")
+          .lowercase()
           .required(),
         card: Joi.object().keys({
           holderName: Joi.string()
