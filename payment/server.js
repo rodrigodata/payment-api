@@ -1,41 +1,42 @@
 /* Registramos os nossos alias para utilização na aplicação */
 require("module-alias/register");
 
-/* Importacao de dependencias */
+/* Import Dependencies */
 const express = require("express");
 const cors = require("cors");
 const { urlencoded, json } = require("body-parser");
 const { errors } = require("celebrate");
 
-/* Inicialização da aplicação express */
+/* Express init */
 const app = express();
 
-/* Importação de Middlewares */
+/* Import Middlewares */
 const ErrorHandlingMiddleware = require("@middlewares/ErrorHandling");
 
-/* Desabilitar headers etag e x-powered-by */
+/* Disable headers etag and x-powered-by. { SECURITY & PERFORMANCE } */
 app.disable("etag").disable("etag");
 
-/* Configuração Express */
+/* Express configuration */
 app.use(cors());
 app.use(urlencoded({ extended: false }));
 app.use(json());
 
-/* Importacao conexao banco de dados */
+/* Database configuration */
 require("./database");
 
-/* Importação dos models */
+/* Import Models */
 require("./app/models");
 
-/* Configurando para usar rotas */
+/* Routes configuration */
 app.use(require("./app/routes"));
 
-/* Registramos o middleware de errors de validação Joi para a aplicação */
+/* Register middleware for Joi validation */
 app.use(errors());
 
-/* Implementação de Middlewares de erros da aplicação */
+/* Middleware to custom error handling */
 app.use(ErrorHandlingMiddleware.error);
 
+/* Bootstrap application */
 var server = app.listen(process.env.PORT || 3000, function() {
   console.log("Escutando na porta " + server.address().port);
 });

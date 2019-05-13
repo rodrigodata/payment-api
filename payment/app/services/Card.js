@@ -3,7 +3,9 @@ const { MoipValidator } = require("moip-sdk-js");
 
 /* Import Constants */
 const { CARD_ERROR_HANDLING } = require("@constants/ErrorHandling");
-const { ERRORS } = require("@constants/App");
+
+/* Import Helpers */
+const ErrorHelper = require("@helpers/Error");
 
 class CardService {
   validateCardInformation(card) {
@@ -11,20 +13,11 @@ class CardService {
     this.validateNumber(card.number);
     this.validateExpirationDate(card.expirationDate);
     this.validateCvv(card.number, card.cvv);
+    this.validateHolderName(card.holderName);
   }
 
   validateCardObject(card) {
-    if (!card)
-      throw new Error(
-        JSON.stringify({
-          message: CARD_ERROR_HANDLING.CARD_INVALID,
-          errors: {
-            message: CARD_ERROR_HANDLING.CARD_INVALID,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
-      );
+    if (!card) ErrorHelper.throw(CARD_ERROR_HANDLING.CARD_INVALID);
   }
 
   /**
@@ -32,17 +25,8 @@ class CardService {
    * Method responsible for credit card number validation
    */
   validateNumber(number) {
-    if (!MoipValidator.isValidNumber(number))
-      throw new Error(
-        JSON.stringify({
-          message: CARD_ERROR_HANDLING.NUMBER_INVALID,
-          errors: {
-            message: CARD_ERROR_HANDLING.NUMBER_INVALID,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
-      );
+    if (!number || !MoipValidator.isValidNumber(number))
+      ErrorHelper.throw(CARD_ERROR_HANDLING.NUMBER_INVALID);
   }
 
   /**
@@ -50,19 +34,13 @@ class CardService {
    * Method responsible for credit card expiration date validation
    */
   validateExpirationDate(expirationDate) {
+    if (!expirationDate)
+      ErrorHelper.throw(CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID);
+
     const [month, year] = expirationDate.split("/");
 
     if (!MoipValidator.isExpiryDateValid(month, year))
-      throw new Error(
-        JSON.stringify({
-          message: CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
-          errors: {
-            message: CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
-      );
+      ErrorHelper.throw(CARD_ERROR_HANDLING.EXPIRATION_DATE_INVALID);
   }
 
   /**
@@ -71,17 +49,12 @@ class CardService {
    * Method responsible for credit card security code validation
    */
   validateCvv(cardNumber, cvv) {
-    if (!MoipValidator.isSecurityCodeValid(cardNumber, cvv))
-      throw new Error(
-        JSON.stringify({
-          message: CARD_ERROR_HANDLING.CVV_INVALID,
-          errors: {
-            message: CARD_ERROR_HANDLING.CVV_INVALID,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
-      );
+    if (
+      !cardNumber ||
+      !cvv ||
+      !MoipValidator.isSecurityCodeValid(cardNumber, cvv)
+    )
+      ErrorHelper.throw(CARD_ERROR_HANDLING.CVV_INVALID);
   }
 
   /**
@@ -90,16 +63,7 @@ class CardService {
    */
   validateHolderName(holderName) {
     if (!holderName || holderName.length == 0) {
-      throw new Error(
-        JSON.stringify({
-          message: CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
-          errors: {
-            message: CARD_ERROR_HANDLING.HOLDER_NAME_INVALID,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
-      );
+      ErrorHelper.throw(CARD_ERROR_HANDLING.HOLDER_NAME_INVALID);
     }
   }
 }

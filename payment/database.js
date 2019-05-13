@@ -1,7 +1,7 @@
-/* Importação de dependencias */
+/* Import Dependencies */
 const { connect } = require("mongoose");
 
-/* Seta variável de ambiente com string do banco de dados */
+/* Set env variable for our database */
 const { DB_HOST } = require("@constants/App");
 
 if (DB_HOST) {
@@ -10,13 +10,15 @@ if (DB_HOST) {
     { useNewUrlParser: true }
   )
     .then(() => {
-      console.info("Banco de dados WIRECARD conectado ao serviço PAYMENT");
+      console.info(
+        "Conection establish to databse WIRECARD from service PAYMENT"
+      );
     })
     .catch(err => {
       console.error(JSON.stringify(err));
     });
 } else {
   console.error(
-    "Não foi fornecido o caminho do banco de dados. Favor verificar."
+    "Database location was not provided. Please, set DB_HOST variable."
   );
 }

@@ -7,7 +7,9 @@
     "install:only:setup": "npm run install:only:prod & npm run install:only:dev",
     "install:only:prod": "npm install --only=prod",
     "install:only:dev": "npm install --only=dev",
-    "test": ""
+    "tests:unit": "mocha '__tests__/business_logic/**spec.js'",
+    "tests:integration": "mocha '__tests__/integration/**spec.js'",
+    "tests:api": "mocha '__tests__/api/**spec.js'"
   },
   "repository": {
     "type": "git",
@@ -39,7 +41,10 @@
     "moip-sdk-js": "2.1.1"
   },
   "devDependencies": {
-    "mocha": "6.1.4"
+    "mocha": "6.1.4",
+    "chai": "4.2.0",
+    "sinon-mongoose": "2.3.0",
+    "sinon": "7.3.2"
   },
   "_moduleAliases": {
     "@models": "./app/models",
@@ -48,6 +53,7 @@
     "@constants": "./app/constants",
     "@controllers": "./app/controllers",
     "@validationsv1": "./app/routes/v1/validations",
-    "@middlewares": "./app/middlewares"
+    "@middlewares": "./app/middlewares",
+    "@helpers": "./app/helpers"
   }
 }

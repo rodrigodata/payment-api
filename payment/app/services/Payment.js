@@ -13,7 +13,9 @@ const CardService = require("./Card");
 
 /* Importação de Constants */
 const { PAYMENT_ERROR_HANDLING } = require("@constants/ErrorHandling");
-const { ERRORS } = require("@constants/App");
+
+/* Import Helpers */
+const ErrorHelper = require("@helpers/Error");
 
 class PaymentService {
   async create(_payment) {
@@ -66,18 +68,13 @@ class PaymentService {
    */
   validationTypeBoletoWithCardInformation(payment) {
     if (
+      payment &&
+      payment.paymentInformation &&
       payment.paymentInformation.card &&
       payment.paymentInformation.type.toLowerCase() == PaymentType.types.BOLETO
     ) {
-      throw new Error(
-        JSON.stringify({
-          message: PAYMENT_ERROR_HANDLING.TYPE_BOLETO_WITH_CARD_INFORMATION,
-          errors: {
-            message: PAYMENT_ERROR_HANDLING.TYPE_BOLETO_WITH_CARD_INFORMATION,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
+      ErrorHelper.throw(
+        PAYMENT_ERROR_HANDLING.TYPE_BOLETO_WITH_CARD_INFORMATION
       );
     }
   }
@@ -88,17 +85,11 @@ class PaymentService {
    * Método responsável por verificar se o tipo de pagamento é suportado pela aplicação
    */
   validationType(type) {
-    if (!Object.values(PaymentType.types).includes(type.toLowerCase())) {
-      throw new Error(
-        JSON.stringify({
-          message: PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
-          errors: {
-            message: PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED,
-            type: ERRORS.BUSINESS_LOGIC.TYPE,
-            statusCode: ERRORS.BUSINESS_LOGIC.STATUS_CODE
-          }
-        })
-      );
+    if (
+      !type ||
+      !Object.values(PaymentType.types).includes(type.toLowerCase())
+    ) {
+      ErrorHelper.throw(PAYMENT_ERROR_HANDLING.TYPE_NOT_SUPPORTED);
     }
   }
 

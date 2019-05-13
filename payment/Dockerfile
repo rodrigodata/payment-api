@@ -4,7 +4,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN npm install
+RUN npm run install:only:setup
 
 EXPOSE 3000
 
