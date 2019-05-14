@@ -28,12 +28,12 @@ git clone https://github.com/rodrigodata/payment-api.git
 cd payment-api
 docker-compose build --no-cache & docker-compose up
 ```
-Para acessar a página de checkout, acesse `localhost:3000/checkout`.
+Para acessar a página de checkout, acesse `localhost:8080` em seu navegador.
 
 # API - Considerações
-Toda a aplicação está escutando na porta `3000`. Tanto a página de checkout, quanto a nossa API. Para ver melhor como está configurado, veja o arquivo `default.conf`. 
+Toda a aplicação está escutando na porta `8080`. Tanto a página de checkout, quanto a nossa API. Para ver melhor como está configurado, veja o arquivo `default.conf`. 
 
-## Criação de pagamentos `[POST]` `/api/v1/payment`
+## Criação de pagamentos `[POST]` `localhost:8080/api/v1/payment`
 Existem dois tipos de pagamento: `boleto` ou `credit_card`. Qualquer outro tipo de pagamento que seja informado a aplicação irá gerar exceção.
 
 - BOLETO:
@@ -97,7 +97,7 @@ retorno:
 }
 ```
 
-## Pesquisa de pagamento `[GET]` `/api/v1/payment/:id`
+## Pesquisa de pagamento `[GET]` `localhost:8080/api/v1/payment/:id`
 
 - BOLETO
 ```shell

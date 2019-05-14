@@ -1,0 +1,32 @@
+{
+  "name": "payments",
+  "version": "0.0.1",
+  "description": "Checkout responsável em processar pagamentos.",
+  "main": "server.js",
+  "scripts": {
+    "install:only:setup": "npm run install:only:prod",
+    "install:only:prod": "npm install --only=prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigodata/payment-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "api",
+    "express",
+    "docker",
+    "compose",
+    "mongodb"
+  ],
+  "author": "Rodrigo Andrade <data@rodrigoandrade.me>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigodata/payment-api/issues"
+  },
+  "homepage": "https://github.com/rodrigodata/payment-api#readme",
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "express": "4.16.4"
+  }
+}
