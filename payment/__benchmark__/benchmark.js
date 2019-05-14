@@ -16,7 +16,7 @@ function run(URL, PATH, JSON_FILE) {
   let autocannonConfiguration = {
     url: `${URL}${PATH}`,
     title: "Payment creation benchmark",
-    connections: process.env.CONNECTIONS_PAYMENT_API || 500,
+    connections: process.env.CONNECTIONS_PAYMENT_API || 50,
     amount: 50000,
     method: "POST",
     headers: {
