@@ -33,10 +33,10 @@ Para acessar a página de checkout, acesse `localhost:3000/checkout`.
 # API - Considerações
 Toda a aplicação está escutando na porta `3000`. Tanto a página de checkout, quanto a nossa API. Para ver melhor como está configurado, veja o arquivo `default.conf`. 
 
-## Criação de pagamentos `[POST]` `/api/v1/payments`
+## Criação de pagamentos `[POST]` `/api/v1/payment`
 Existem dois tipos de pagamento: `boleto` ou `credit_card`. Qualquer outro tipo de pagamento que seja informado a aplicação irá gerar exceção.
 
-1. BOLETO:
+- BOLETO:
 ```shell
 {
 	"client": {
@@ -55,7 +55,17 @@ Existem dois tipos de pagamento: `boleto` ou `credit_card`. Qualquer outro tipo 
 ```
 
 
-1. CREDIT_CARD:
+retorno:
+```shell
+{
+    "id": "5cda07a78a0cc7000f1ce81d",
+    "boletoNumber": "03399.63290 64000.000006 00125.201020 4 56140000017832"
+}
+```
+
+
+- CREDIT_CARD:
+   
 ```shell
 {
 	"client": {
@@ -69,6 +79,63 @@ Existem dois tipos de pagamento: `boleto` ou `credit_card`. Qualquer outro tipo 
 	"paymentInformation": {
 		"amount": 100,
 		"type": "credit_card",
+		"card": {
+		   "holderName": "John Doe",
+		   "number": "5555666677778884",
+		   "expirationDate": "04/2027",
+		   "cvv": "124"
+		}
+	}
+}
+```
+
+retorno:
+```shell
+{
+    "id": "5cda15704ededd000f46edac",
+    "status": "SUCCESS"
+}
+```
+
+## Pesquisa de pagamento `[GET]` `/api/v1/payment/:id`
+
+- BOLETO
+```shell
+{
+    "id": "5cda07a78a0cc7000f1ce81d",
+    "client": {
+        "id": 1
+    },
+    "buyer": {
+        "name": "JOHN DOE",
+        "email": "john@doeeee.com",
+        "cpf": "222.333.666-38"
+    },
+    "paymentInformation": {
+        "amount": "10000",
+        "type": "boleto",
+        "status": "SUCCESS",
+        "boletoNumber": "03399.63290 64000.000006 00125.201020 4 56140000017832"
+    }
+}
+```
+
+- CREDIT_CARD
+```shell
+{
+    "id": "5cda15704ededd000f46edac",
+	"client": {
+		"id": 1
+	},
+	"buyer": {
+		"name": "John Doe",	
+		"email": "john@doe.com",
+		"cpf": "222.333.666-38"
+	},
+	"paymentInformation": {
+		"amount": 100,
+		"type": "credit_card"
+        "status": "SUCCESS",
 		"card": {
 		   "holderName": "John Doe",
 		   "number": "5555666677778884",

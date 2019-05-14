@@ -1,6 +1,10 @@
 version: '3'
 services:
-  #implementar pagina de checkout /web
+  web:
+    build: './web'
+    ports:
+      - "3000:3000"
+
   payment:
     build: './payment'
     ports:
@@ -15,4 +19,15 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./web/public:/srv/www/static
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+      - payment
   
