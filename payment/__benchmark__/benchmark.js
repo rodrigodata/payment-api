@@ -32,6 +32,7 @@ function run(URL, PATH, JSON_FILE) {
   if (process.env.AMOUNT_PAYMENT_API)
     autocannonConfiguration.amount = process.env.AMOUNT_PAYMENT_API;
 
+  console.log(autocannonConfiguration);
   /* Configuration of our benchmark */
   const instance = autocannon(autocannonConfiguration);
 
