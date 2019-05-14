@@ -68,10 +68,12 @@ PaymentSchema.methods.modelAssignment = function(payment) {
 PaymentSchema.methods.formatToJSON = function() {
   if (this.type == PaymentType.types.BOLETO) {
     return {
+      id: this._id,
       boletoNumber: this.boletoNumber
     };
   } else {
     return {
+      id: this._id,
       status: this.status
     };
   }

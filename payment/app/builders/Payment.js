@@ -9,6 +9,9 @@ class Payment {
    * @param {*} payment
    */
   build(payment) {
+    /* Payment id */
+    this.id = payment._id;
+
     /* Section Client */
     this.client = new ClientBuilder().setId(payment.idClient).build();
 
