@@ -16,8 +16,8 @@ function run(URL, PATH, JSON_FILE) {
   let autocannonConfiguration = {
     url: `${URL}${PATH}`,
     title: "Payment creation benchmark",
-    connections: process.env.CONNECTIONS_PAYMENT_API || 10,
-    duration: process.env.DURATION_PAYMENT_API || 60,
+    connections: process.env.CONNECTIONS_PAYMENT_API || 1000,
+    amount: 50000,
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -32,7 +32,6 @@ function run(URL, PATH, JSON_FILE) {
   if (process.env.AMOUNT_PAYMENT_API)
     autocannonConfiguration.amount = process.env.AMOUNT_PAYMENT_API;
 
-  console.log(autocannonConfiguration);
   /* Configuration of our benchmark */
   const instance = autocannon(autocannonConfiguration);
 
