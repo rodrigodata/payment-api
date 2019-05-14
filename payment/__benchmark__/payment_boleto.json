@@ -1,0 +1,14 @@
+{
+  "client": {
+    "id": 1
+  },
+  "buyer": {
+    "name": "JOHN DOE",
+    "email": "john@doeeee.com",
+    "cpf": "222.333.666-38"
+  },
+  "paymentInformation": {
+    "amount": "10000",
+    "type": "boleto"
+  }
+}

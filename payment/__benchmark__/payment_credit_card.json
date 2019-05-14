@@ -1,0 +1,20 @@
+{
+  "client": {
+    "id": 1
+  },
+  "buyer": {
+    "name": "JOHN DOE",
+    "email": "john@doe.com",
+    "cpf": "222.333.666-38"
+  },
+  "paymentInformation": {
+    "amount": "100",
+    "type": "credit_card",
+    "card": {
+      "holderName": "JOHN DOE",
+      "number": "5555666677778884",
+      "expirationDate": "04/2027",
+      "cvv": "124"
+    }
+  }
+}
