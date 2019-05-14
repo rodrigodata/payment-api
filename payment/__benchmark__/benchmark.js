@@ -17,7 +17,7 @@ function run(URL, PATH, JSON_FILE) {
     url: `${URL}${PATH}`,
     title: "Payment creation benchmark",
     connections: process.env.CONNECTIONS_PAYMENT_API || 1000,
-    amount: 50000,
+    amount: 1000,
     method: "POST",
     headers: {
       "Content-Type": "application/json"
