@@ -1,15 +1,20 @@
 /* Import Dependencies */
 const autocannon = require("autocannon");
+const os = require("os");
+const { PassThrough } = require("stream");
 
 /* Mocks */
 const paymentCreditCard = require("./payment_credit_card.json");
 const paymentBoleto = require("./payment_boleto.json");
 
 function run(URL, PATH, JSON_FILE) {
+  /* */
+  const buf = [];
+  const outputStream = new PassThrough();
+
   /* Autocannon configuration */
   let autocannonConfiguration = {
-    url: URL,
-    path: PATH,
+    url: `${URL}${PATH}`,
     title: "Payment creation benchmark",
     connections: process.env.CONNECTIONS_PAYMENT_API || 10,
     duration: process.env.DURATION_PAYMENT_API || 60,
@@ -28,19 +33,20 @@ function run(URL, PATH, JSON_FILE) {
     autocannonConfiguration.amount = process.env.AMOUNT_PAYMENT_API;
 
   /* Configuration of our benchmark */
-  const instance = autocannon(autocannonConfiguration, finishedBenchmark);
+  const instance = autocannon(autocannonConfiguration);
 
-  autocannon.track(instance, { renderProgressBar: false });
+  autocannon.track(instance, { outputStream });
+
+  outputStream.on("data", data => buf.push(data));
+  instance.on("done", function() {
+    process.stdout.write(os.EOL);
+    process.stdout.write(Buffer.concat(buf));
+  });
 
   // this is used to kill the instance on CTRL-C
   process.once("SIGINT", () => {
     instance.stop();
   });
-
-  /* */
-  function finishedBenchmark(err, res) {
-    console.info(`Benchmark finished for endpoint ${PATH}`, err, res);
-  }
 }
 
 /* Run our benchmark in parallel */
