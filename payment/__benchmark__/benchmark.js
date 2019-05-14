@@ -51,5 +51,5 @@ function run(URL, PATH, JSON_FILE) {
 }
 
 /* Run our benchmark in parallel */
-run("localhost:8080", "/api/v1/payment", paymentCreditCard);
-run("localhost:8080", "/api/v1/payment", paymentBoleto);
+run("http://localhost:8080", "/api/v1/payment", paymentCreditCard);
+run("http://localhost:8080", "/api/v1/payment", paymentBoleto);
