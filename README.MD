@@ -24,7 +24,10 @@ docker-compose build --no-cache & docker-compose up --build --force-recreate
 Para acessar a página de checkout, acesse `localhost:8080` em seu navegador.
 
 # Testes
-O projeto possui três tipos de testes: unitário, testes de endpoint e testes de desempenho da aplicação.
+O projeto possui três tipos de testes: unitário, testes de endpoint e testes de desempenho da aplicação. Caso não tenha feito a build, executar também:
+```shell
+docker-compose build --no-cache
+```
 
 ```shell
 // Rodar testes contra endpoint da aplicação
