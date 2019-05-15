@@ -8,8 +8,9 @@ const cluster = require("cluster");
 const cors = require("cors");
 const { urlencoded, json } = require("body-parser");
 const { errors } = require("celebrate");
+const helmet = require("helmet");
 
-/* */
+/* Clustering our express application */
 if (cluster.isMaster) {
   const cpus = require("os").cpus();
   cpus.forEach(function() {
@@ -18,27 +19,20 @@ if (cluster.isMaster) {
 
   // Workers will emit an 'online' event when they spawn
   cluster.on("online", function(worker) {
-    console.log(
-      "Worker " +
-        worker.id +
-        " is here to chew bubblegum and scale node applications."
-    );
+    console.info("Worker " + worker.id + " is online.");
   });
 
   // Workers will emit an 'exit' event when they exit
   cluster.on("exit", function(worker, code, signal) {
-    console.log(
-      "Worker " + worker.id + " died with code " + code + ". RIP in peace."
-    );
-    // You can maintain a constant number of workers by forking when a worker exits
+    console.info("Worker " + worker.id + " died with code " + code + ".");
     cluster.fork();
   });
 } else {
   /* Express init */
   const app = express();
 
-  /* */
   app.use(compression());
+  app.use(helmet());
 
   /* Import Middlewares */
   const ErrorHandlingMiddleware = require("@middlewares/ErrorHandling");

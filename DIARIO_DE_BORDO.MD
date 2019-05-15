@@ -38,7 +38,7 @@ Está aplicação tem como regra utilizar os seguintes status code:
       1. `*`
 
 # CENÁRIOS DE TESTES
-Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis de como a minha aplicação pode falhar. Para isso, gosta de me organizar da maneira abaixo. Todos os cenários em que serão feitos os testes ou são de validação de dado e/ou regras de negócios.
+Para criação de testes, gosto sempre de pensar em todas as maneiras possíveis de como a minha aplicação pode falhar. Para isso, gosto de me organizar da maneira abaixo. Todos os cenários em que serão feitos os testes ou são de validação de dado e/ou regras de negócios.
 
 1. Pagamento por cartão de crédito:
    1. Todo cartão de crédito deve ter os campos abaixo e que sejam válidos(data correta, tipo de dado correto etc):
@@ -85,6 +85,6 @@ Sempre gosto de ter um serviço principal, responsável por "orquestrar" certas 
 
 
 # Sugestões
-Seria interessante ter uma métrica ou performance a ser atingida pela API. Por exemplo:
-  - A API deve suportar ~10.000 req/s
-  - Se tratando de um endpoint de pagamentos, implementar algum tipo de idempotência de requisições(para não haver a possibilidade de pagamentos duplicados vindos de uma mesma origem etc)
+Seria interessante ter uma métrica ou performance a ser atingida pelo teste. Por exemplo:
+  - A API deve suportar ~10.000 req/s ou algum cenário mais especifico que acontece no dia a dia da Wirecard. Por exemplo, todo final de mês há um pico de transações na API pois a maioria dos clientes integrados com a empresa fazem as cobranças recorrentes nessa data.
+  - Se tratando de um endpoint de pagamentos, implementar algum tipo de idempotência de requisições (para não haver a possibilidade de pagamentos duplicados vindos de uma mesma origem etc)

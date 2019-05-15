@@ -12,24 +12,38 @@
     />
     <title>Checkout - Wirecard</title>
   </head>
+  <style>
+    ol,
+    ul {
+      list-style: none;
+    }
+  </style>
   <body>
     <div class="container">
       <div class="row my-3">
         <div class="col text-center">
           <h2>Checkout</h2>
+          <br />
+          <h3>R$ 100,00</h3>
         </div>
       </div>
       <div class="row">
         <div class="col border border-secondary rounded my-2 mx-2 p-4">
-          <form>
-            <h6>Buyer information</h6>
+          <form novalidate>
+            <h6>1. Buyer information</h6>
             <div class="form-group">
               <input
                 type="input"
                 class="form-control"
                 id="buyerName"
                 placeholder="Enter your name"
+                onblur="return CHECKOUT.validateFormCheckout()"
+                required
               />
+              <small
+                id="buyerNameInformation"
+                class="form-text text-muted"
+              ></small>
             </div>
             <div class="form-group">
               <input
@@ -37,7 +51,13 @@
                 class="form-control"
                 id="buyerEmail"
                 placeholder="Enter your email"
+                onblur="return CHECKOUT.validateFormCheckout()"
+                required
               />
+              <small
+                id="buyerEmailInformation"
+                class="form-text text-muted"
+              ></small>
             </div>
             <div class="form-group">
               <input
@@ -45,97 +65,489 @@
                 class="form-control"
                 id="buyerCpf"
                 placeholder="CPF"
+                onblur="return CHECKOUT.validateFormCheckout()"
+                required
               />
+              <small
+                id="buyerCpfInformation"
+                class="form-text text-muted"
+              ></small>
             </div>
           </form>
         </div>
         <div class="col border border-secondary rounded my-2 mx-2 p-4">
-          <h6>Response</h6>
+          <h6>3. Response</h6>
           <div class="row">
             <div class="col">
-              id: <span id="idPayment"></span> <br />
-              status: <span id="statusPayment"></span>
+              <ul id="paymentCreated"></ul>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col border border-secondary rounded my-2 mx-2 p-4">
-          <form>
-            <h6>Payment information</h6>
-            <div class="form-group">
+          <form onsubmit="return CHECKOUT.createPayment()" novalidate>
+            <h6>2. Payment information</h6>
+            <div class="form-check my-2">
               <input
-                type="input"
-                class="form-control"
-                id="creditCardHolderName"
-                placeholder="Credit card holder name"
+                type="checkbox"
+                class="form-check-input"
+                id="boletoOption"
+                onchange="return CHECKOUT.setBoleto()"
               />
+              <label class="form-check-label" for="boletoOption">Boleto</label>
             </div>
-            <div class="form-group">
-              <input
-                type="input"
-                class="form-control"
-                id="creditCardNumber"
-                placeholder="Credit card number"
-              />
+            <div id="paymentForm">
+              <div class="form-group">
+                <input
+                  type="input"
+                  class="form-control"
+                  id="creditCardHolderName"
+                  placeholder="Credit card holder name"
+                  onblur="return CHECKOUT.validateFormCheckout()"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="input"
+                  class="form-control"
+                  id="creditCardNumber"
+                  placeholder="Credit card number"
+                  onblur="return CHECKOUT.validateFormCheckout()"
+                  required
+                />
+                <small
+                  id="creditCardNumberInformation"
+                  class="form-text text-muted"
+                ></small>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <input
+                      type="input"
+                      class="form-control"
+                      id="creditCardExpirationDate"
+                      placeholder="MM/YYYY"
+                      onblur="return CHECKOUT.validateFormCheckout()"
+                      required
+                    />
+                    <small
+                      id="creditCardExpirationDateInformation"
+                      class="form-text text-muted"
+                    ></small>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <input
+                      type="input"
+                      class="form-control"
+                      id="creditCardSecurityCode"
+                      placeholder="CVV"
+                      onblur="return CHECKOUT.validateFormCheckout()"
+                      required
+                    />
+                    <small
+                      id="creditCardSecurityCodeInformation"
+                      class="form-text text-muted"
+                    ></small>
+                  </div>
+                </div>
+              </div>
             </div>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              id="paymentButton"
+            >
+              Send payment
+            </button>
+          </form>
+        </div>
+        <div class="col border border-secondary rounded my-2 mx-2 p-4">
+          <h6>4. Check payment status</h6>
+          <form onsubmit="return CHECKOUT.findPaymentById()">
             <div class="row">
               <div class="col">
                 <div class="form-group">
                   <input
                     type="input"
                     class="form-control"
-                    id="creditCardExpirationDate"
-                    placeholder="MM/YYYY"
+                    id="idPaymentSearch"
+                    placeholder="place your payment id from step 3."
                   />
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col">
-                <div class="form-group">
-                  <input
-                    type="input"
-                    class="form-control"
-                    id="creditCardSecurityCode"
-                    placeholder="CVV"
-                  />
-                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                  Find Payment
+                </button>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Send payment</button>
           </form>
-        </div>
-        <div class="col border border-secondary rounded my-2 mx-2 p-4">
-          <h6>Check payment status</h6>
+
           <div class="row">
-            <div class="form">
-              <div class="form-group">
-                <input
-                  type="input"
-                  class="form-control"
-                  id="idPaymentSearch"
-                  placeholder="place your payment id"
-                />
-            </div>
-              <button type="submit" class="btn btn-primary">
-                Find Payment
-              </button>
-          </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div id="payment">
-                
-              </div>
+            <div class="col mt-2 pl-0 ml-0">
+              <ul id="payment"></ul>
             </div>
           </div>
-          </div>
         </div>
+      </div>
     </div>
     <script>
-        const API = (() => {
-            // listar pagamento
+      const CHECKOUT = (() => {
+        const findPaymentById = () => {
+          try {
+            /* Get value from input */
+            let _paymentId = document.getElementById("idPaymentSearch").value;
+            if (_paymentId) {
+              fetch("http://localhost:8080/api/v1/payment/" + _paymentId)
+                .then(response => response.json())
+                .then(payment => {
+                  /* if out payment exists */
+                  if (payment && payment.id) {
+                    /* Sanitize payment list */
+                    document.getElementById("payment").innerHTML = "";
 
-        })();
+                    /* Get reference */
+                    const ul = document.getElementById("payment");
+
+                    /* Create li element*/
+                    let li = document.createElement("li");
+
+                    /* Set values from our api */
+                    let liContent = `
+                      <p>Client id: ${payment.client.id}</p>
+                      <p>Payment Id: ${payment.id}</p>
+                      <p>Name: ${payment.buyer.name}</p>
+                      <p>Email: ${payment.buyer.email}</p>
+                      <p>Cpf: ${payment.buyer.cpf}</p>
+                      <p>Amount: ${payment.paymentInformation.amount}</p>
+                      <p>Type: ${payment.paymentInformation.type}</p>
+                      <p>Status: ${
+                        payment.paymentInformation.status
+                      }</p>                    
+                    `;
+
+                    /* If the type == 'credit_card' we set credit card information */
+                    if (payment.paymentInformation.type == "credit_card") {
+                      liContent += `
+                        <p>Holder name: ${
+                          payment.paymentInformation.card.holderName
+                        }</p>
+                        <p>Number: ${payment.paymentInformation.card.number}</p>
+                        <p>Expiration Date: ${
+                          payment.paymentInformation.card.expirationDate
+                        }</p>
+                        <p>Cvv: ${payment.paymentInformation.card.cvv}</p>
+                      `;
+                    } else {
+                      liContent += `
+                        <p>Boleto number: ${
+                          payment.paymentInformation.boletoNumber
+                        }</p>
+                      `;
+                    }
+
+                    /* Append to DOM */
+                    li.innerHTML = liContent;
+                    ul.appendChild(li);
+                  } else {
+                    /* Sanitize payment list */
+                    document.getElementById("payment").innerHTML = "";
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            } else {
+              /* Sanitize payment list */
+              document.getElementById("payment").innerHTML = "";
+            }
+          } catch (error) {
+            console.error(error);
+          }
+          /* Prevent submit button to reload page */
+          return false;
+        };
+
+        const createPayment = () => {
+          try {
+            const paymentObject = {};
+            /* Buyer information */
+            paymentObject.buyer = {};
+            paymentObject.buyer.name = document.getElementById(
+              "buyerName"
+            ).value;
+            paymentObject.buyer.email = document.getElementById(
+              "buyerEmail"
+            ).value;
+            paymentObject.buyer.cpf = document.getElementById("buyerCpf").value;
+
+            /* Client information */
+            paymentObject.client = {};
+            paymentObject.client.id = 1;
+
+            /* Payment information */
+            paymentObject.paymentInformation = {};
+            paymentObject.paymentInformation.amount = 100;
+            /* Check if the user wants to pay with boleto */
+            const isBoleto = document.getElementById("boletoOption").checked;
+            if (isBoleto) {
+              paymentObject.paymentInformation.type = "boleto";
+            } else {
+              paymentObject.paymentInformation.type = "credit_card";
+            }
+
+            /* Credit card information */
+            if (paymentObject.paymentInformation.type == "credit_card") {
+              paymentObject.paymentInformation.card = {};
+              paymentObject.paymentInformation.card.holderName = document.getElementById(
+                "creditCardHolderName"
+              ).value;
+              paymentObject.paymentInformation.card.number = document.getElementById(
+                "creditCardNumber"
+              ).value;
+              paymentObject.paymentInformation.card.expirationDate = document.getElementById(
+                "creditCardExpirationDate"
+              ).value;
+              paymentObject.paymentInformation.card.cvv = document.getElementById(
+                "creditCardSecurityCode"
+              ).value;
+            }
+
+            fetch("http://localhost:8080/api/v1/payment", {
+              method: "POST",
+              body: JSON.stringify(paymentObject),
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              }
+            })
+              .then(response => response.json())
+              .then(payment => {
+                /* Sanitize paymentCreated list */
+                document.getElementById("paymentCreated").innerHTML = "";
+                if (payment && payment.id) {
+                  /* Get reference */
+                  const ul = document.getElementById("paymentCreated");
+
+                  /* Create element li */
+                  let li = document.createElement("li");
+                  let liContent = `
+                        <p><b>Id</b>: ${payment.id}</p>
+                      `;
+                  if (paymentObject.paymentInformation.type == "boleto") {
+                    liContent += `
+                          <p><b>Boleto number</b>: ${payment.boletoNumber}</p>
+                        `;
+                  } else {
+                    liContent += `
+                          <p><b>Status</b>: ${payment.status}</p>
+                        `;
+                  }
+
+                  /* Append to DOM */
+                  li.innerHTML = liContent;
+                  ul.appendChild(li);
+                } else {
+                  /* Get reference */
+                  const ul = document.getElementById("paymentCreated");
+
+                  /* Create element li */
+                  let li = document.createElement("li");
+                  let liContent = `
+                      <p>Ops, something went wrong. Please try again!</p>
+                      <p><b>${payment.message}</b></p>
+                    `;
+                  /* Append to DOM */
+                  li.innerHTML = liContent;
+                  ul.appendChild(li);
+                }
+              })
+              .catch(err => {
+                console.error(err);
+              });
+          } catch (error) {
+            console.error(error);
+          }
+          /* Prevent submit button to reload page */
+          return false;
+        };
+
+        const setBoleto = () => {
+          /* Check if the user wants to pay with boleto */
+          const isBoleto = document.getElementById("boletoOption").checked;
+          if (isBoleto) {
+            document.getElementById("paymentForm").style.display = "none";
+
+            /* Sanitize credit card information */
+            document.getElementById("creditCardHolderName").value = "";
+            document.getElementById("creditCardNumber").value = "";
+            document.getElementById("creditCardExpirationDate").value = "";
+            document.getElementById("creditCardSecurityCode").value = "";
+
+            /* Validate form */
+            validateFormCheckout();
+          } else {
+            document.getElementById("paymentForm").style.display = "inline";
+            validateFormCheckout();
+          }
+        };
+
+        const validateCreditCard = () => {
+          /* Get credit card number from input */
+          const creditCardNumber = document.getElementById("creditCardNumber")
+            .value;
+
+          /* Get credit card number from input */
+          const creditCardExpirationDate = document.getElementById(
+            "creditCardExpirationDate"
+          ).value;
+
+          /* Get credit card number from input */
+          const creditCardSecurityCode = document.getElementById(
+            "creditCardSecurityCode"
+          ).value;
+
+          /* Sanitize validation text */
+          document.getElementById("creditCardNumberInformation").innerHTML = "";
+          document.getElementById(
+            "creditCardExpirationDateInformation"
+          ).innerHTML = "";
+          document.getElementById(
+            "creditCardSecurityCodeInformation"
+          ).innerHTML = "";
+
+          /* Validate only credit card */
+          if (Moip.Validator.isValid(creditCardNumber)) {
+            const cardType = Moip.Validator.cardType(creditCardNumber);
+            if (cardType) {
+              document.getElementById(
+                "creditCardNumberInformation"
+              ).innerHTML = `<span style="color: green; font-weight: bold;">Credit card number valid</span> / <span style="font-weight: bold;">Issuer: ${
+                cardType.brand
+              }</span>`;
+            }
+          } else {
+            document.getElementById(
+              "creditCardNumberInformation"
+            ).innerHTML = `<span style="color: red; font-weight: bold;">Credit card number invalid</span>`;
+            setButtonPaymentState(false);
+          }
+
+          /* Validate only Security Code*/
+          if (
+            Moip.Validator.isSecurityCodeValid(
+              creditCardNumber,
+              creditCardSecurityCode
+            )
+          ) {
+            document.getElementById(
+              "creditCardSecurityCodeInformation"
+            ).innerHTML =
+              '<span style="color: green; font-weight: bold;">Cvv valid</span>';
+          } else {
+            document.getElementById(
+              "creditCardSecurityCodeInformation"
+            ).innerHTML =
+              '<span style="color: red; font-weight: bold;">Cvv invalid</span>';
+            setButtonPaymentState(false);
+          }
+
+          const [month, year] = creditCardExpirationDate.split("/");
+          /* Validate only Expiration date */
+          if (Moip.Validator.isExpiryDateValid(month, year)) {
+            document.getElementById(
+              "creditCardExpirationDateInformation"
+            ).innerHTML =
+              '<span style="color: green; font-weight: bold;">Expiration date valid</span>';
+          } else {
+            document.getElementById(
+              "creditCardExpirationDateInformation"
+            ).innerHTML =
+              '<span style="color: red; font-weight: bold;">Expiration date invalid</span>';
+            setButtonPaymentState(false);
+          }
+        };
+
+        const validateFormCheckout = () => {
+          /* Set button to enable */
+          setButtonPaymentState(true);
+          /* Sanitize input validation */
+          document.getElementById("buyerNameInformation").innerHTML = "";
+          document.getElementById("buyerEmailInformation").innerHTML = "";
+          document.getElementById("buyerCpfInformation").innerHTML = "";
+
+          if (!document.getElementById("boletoOption").checked) {
+            /* Validate again credit card information */
+            validateCreditCard();
+          }
+
+          /* buyer name */
+          const buyerName = document.getElementById("buyerName").value;
+
+          /* buyer email */
+          const buyerEmail = document.getElementById("buyerEmail").value;
+
+          /* buyer cpf */
+          const buyerCpf = document.getElementById("buyerCpf").value;
+
+          if (!buyerName || buyerName.length == 0) {
+            document.getElementById("buyerNameInformation").innerHTML =
+              '<span style="color: red; font-weight: bold;">Name invalid</span>';
+            setButtonPaymentState(false);
+          }
+
+          if (
+            !buyerEmail ||
+            buyerEmail.length == 0 ||
+            !/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi.test(
+              buyerEmail
+            )
+          ) {
+            document.getElementById("buyerEmailInformation").innerHTML =
+              '<span style="color: red; font-weight: bold;">Email invalid. Valid format: myawesomeemail@mycompany.com</span>';
+            setButtonPaymentState(false);
+          }
+
+          if (!buyerCpf || !/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(buyerCpf)) {
+            document.getElementById("buyerCpfInformation").innerHTML =
+              '<span style="color: red; font-weight: bold;">Cpf invalid. Valid format: 999.999.999-99</span>';
+            setButtonPaymentState(false);
+          }
+        };
+
+        const setButtonPaymentState = state => {
+          if (state) {
+            document
+              .getElementById("paymentButton")
+              .removeAttribute("disabled", "disabled");
+            document
+              .getElementById("paymentButton")
+              .setAttribute("enabled", "enabled");
+          } else {
+            document
+              .getElementById("paymentButton")
+              .removeAttribute("enabled", "enabled");
+            document
+              .getElementById("paymentButton")
+              .setAttribute("disabled", "disabled");
+          }
+        };
+
+        return {
+          findPaymentById,
+          createPayment,
+          setBoleto,
+          validateCreditCard,
+          validateFormCheckout
+        };
+      })();
     </script>
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -152,5 +564,6 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script src="https://assets.moip.com.br/v2/moip-2.8.0.min.js"></script>
   </body>
 </html>
