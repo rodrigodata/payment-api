@@ -1,5 +1,5 @@
 # Descrição e Diario de bordo
-Este arquivo tem como objetivo demonstrar como você poderá baixar e executar este projeto em sua máquina local. Porém, caso você queira ler mais a fundo sobre certas escolhas feitas na aplicação ou uma visão mais aprofundada da mesma, basta acessar o [DIARIO_DE_BORDO](DIARIO_DE_BORDO.MD).
+Este arquivo tem como objetivo demonstrar como você poderá baixar e executar este projeto em sua máquina local. Porém, caso você queira ler mais a fundo sobre certas escolhas feitas na aplicação ou uma visão mais aprofundada da mesma, basta acessar o [DIARIO_DE_BORDO](DIARIO_DE_BORDO.MD). A branch principal da aplicação é a `master`.
 
 # Tecnologias
 Node.js, Express, MongoDB, Docker e Compose.
