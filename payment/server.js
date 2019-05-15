@@ -1,4 +1,4 @@
-/* Registramos os nossos alias para utilização na aplicação */
+/* Alias registering */
 require("module-alias/register");
 
 /* Import Dependencies */

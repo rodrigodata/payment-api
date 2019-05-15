@@ -19,15 +19,15 @@ const ErrorHelper = require("@helpers/Error");
 
 class PaymentService {
   async create(_payment) {
-    /* Validação */
+    /* Validations */
     this.validationType(_payment.paymentInformation.type);
     this.validationTypeBoletoWithCardInformation(_payment);
     this.validateCardInformation(_payment.paymentInformation);
 
-    /* Build & Model */
+    /* Model */
     const payment = new Payment();
 
-    /* Assign para salvar conforme model */
+    /* Assign */
     payment.modelAssignment(_payment);
 
     return payment
@@ -43,7 +43,7 @@ class PaymentService {
   /**
    *
    * @param {*} id
-   * Método responsável por buscar pagamento por id dentro do nosso banco de dados.
+   * Method responsible for searching by document id
    */
   async findById(id) {
     return Payment.findById(id)
@@ -63,8 +63,7 @@ class PaymentService {
   /**
    *
    * @param {*} payment
-   * Método responsável em validar se caso o método de pagamento for boleto,
-   * não está sendo passado informação de cartão de crédito.
+   * Method responsible to check if the payment method == boleto, we can't accept credit card information.
    */
   validationTypeBoletoWithCardInformation(payment) {
     if (
@@ -82,7 +81,7 @@ class PaymentService {
   /**
    *
    * @param {*} type
-   * Método responsável por verificar se o tipo de pagamento é suportado pela aplicação
+   * Method responsible to check if the payment type is supported
    */
   validationType(type) {
     if (
@@ -96,7 +95,7 @@ class PaymentService {
   /**
    *
    * @param {*} paymentInformation
-   * Método responsável por efetuar chamada ao serviço CardService e efetuar validação dos dados do cartão de crédito informado
+   * Method responsible for calling CardService and check credit card values
    */
   validateCardInformation(paymentInformation) {
     if (paymentInformation.type != PaymentType.types.BOLETO) {
