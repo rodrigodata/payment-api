@@ -5,14 +5,15 @@ Este arquivo tem como objetivo demonstrar como você poderá baixar e executar e
 Node.js, Express, MongoDB, Docker e Compose.
 
 # Dependências
-Este projeto utiliza docker e docker-compose(versão 3). Para verificar se você possui instalado:
+Este projeto utiliza docker, docker-compose(versão 3) e node.js. Para verificar se você possui instalado:
 
 ```shell
+node --version // v8.16.0
 docker --version // Docker version 18.09.2, build 6247962
 docker-compose --version // docker-compose version 1.23.2, build 1110ad01
 ```
 
-Caso a sua máquina não possua o docker ou o compose, basta seguir a orientação da documentação oficial [Docker](https://docs.docker.com/install/) e [Compose](https://docs.docker.com/compose/install/).
+Caso a sua máquina não possua o docker ou o compose, basta seguir a orientação da documentação oficial [Docker](https://docs.docker.com/install/) e [Compose](https://docs.docker.com/compose/install/). Para instalação do node.js(versão v8+), aconselho a utilizar o [nvm](https://github.com/nvm-sh/nvm).
 
 # Desenvolvimento
 Para rodar a aplicação localmente:
