@@ -9,7 +9,7 @@
     "install:only:dev": "npm install --only=dev",
     "tests:unit": "mocha '__tests__/business_logic/**spec.js'",
     "tests:api": "mocha '__tests__/api/**spec.js'",
-    "tests:benchmark": "node '__benchmark__/benchmark.js'"
+    "tests:benchmark": "node __benchmark__/benchmark.js"
   },
   "repository": {
     "type": "git",
@@ -44,8 +44,6 @@
   "devDependencies": {
     "mocha": "6.1.4",
     "chai": "4.2.0",
-    "sinon-mongoose": "2.3.0",
-    "sinon": "7.3.2",
     "supertest": "4.0.2",
     "autocannon": "3.2.2"
   },

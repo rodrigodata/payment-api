@@ -21,9 +21,14 @@ docker-compose -p payment_api_tests run -p 3006 --rm payment npm run tests:api
 docker-compose -p payment_api_tests run -p 3007 --rm payment npm run tests:unit
 ```
 
-# Performance
+# Desempenho
+Para rodar o benchmark, basta:
+```shell
+docker-compose build --no-cache & docker-compose up // executar em outro terminal
+cd payment & npm run install:only:setup & npm run tests:benchmark // executar em outro terminal
+```
 
-1. Teste rodando localmente
+## Rodando localmente
    
 Configuração:
 ```shell
@@ -36,35 +41,16 @@ Requisições por conexão: 500
 Total de requisições do teste: 50000
 
 ```
-Criação Cartão de Crédito
-┌─────────┬───────┬───────┬───────┬───────┬──────────┬────────┬───────────┐
-│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev  │ Max       │
-├─────────┼───────┼───────┼───────┼───────┼──────────┼────────┼───────────┤
-│ Latency │ 18 ms │ 23 ms │ 38 ms │ 44 ms │ 24.52 ms │ 5.5 ms │ 114.23 ms │
-└─────────┴───────┴───────┴───────┴───────┴──────────┴────────┴───────────┘
-┌───────────┬─────────┬────────┬────────┬────────┬────────┬─────────┬─────────┐
-│ Stat      │ 1%      │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev   │ Min     │
-├───────────┼─────────┼────────┼────────┼────────┼────────┼─────────┼─────────┤
-│ Req/Sec   │ 272     │ 312    │ 407    │ 428    │ 396.08 │ 43.71   │ 25      │
-├───────────┼─────────┼────────┼────────┼────────┼────────┼─────────┼─────────┤
-│ Bytes/Sec │ 97.2 kB │ 112 kB │ 146 kB │ 154 kB │ 142 kB │ 15.7 kB │ 8.97 kB │
-└───────────┴─────────┴────────┴────────┴────────┴────────┴─────────┴─────────┘
+### Criação Cartão de Crédito
 
+![Benchmark Cartão de crédito](benchmark_local_credit_card.jpg "Benchmark Cartão de crédito")
 
-Criação Boleto
-┌─────────┬───────┬───────┬───────┬───────┬──────────┬─────────┬───────────┐
-│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev   │ Max       │
-├─────────┼───────┼───────┼───────┼───────┼──────────┼─────────┼───────────┤
-│ Latency │ 18 ms │ 23 ms │ 38 ms │ 45 ms │ 24.55 ms │ 5.59 ms │ 100.62 ms │
-└─────────┴───────┴───────┴───────┴───────┴──────────┴─────────┴───────────┘
-┌───────────┬─────────┬────────┬────────┬────────┬────────┬─────────┬─────────┐
-│ Stat      │ 1%      │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev   │ Min     │
-├───────────┼─────────┼────────┼────────┼────────┼────────┼─────────┼─────────┤
-│ Req/Sec   │ 264     │ 307    │ 407    │ 429    │ 396.08 │ 39.68   │ 88      │
-├───────────┼─────────┼────────┼────────┼────────┼────────┼─────────┼─────────┤
-│ Bytes/Sec │ 94.8 kB │ 110 kB │ 146 kB │ 154 kB │ 142 kB │ 14.2 kB │ 31.6 kB │
-└───────────┴─────────┴────────┴────────┴────────┴────────┴─────────┴─────────┘
+### Criação Boleto
+![Benchmark Boleto](benchmark_local_boleto.jpg "Benchmark Boleto")
 
+----
+
+## Rodando no Digital Ocean
 
 ```shell
 Digital Ocean droplet:
@@ -76,6 +62,13 @@ Conexões: 10
 Requisições por conexão: 500
 Total de requisições do teste: 50000
 ```
+
+### Criação Cartão de Crédito
+
+![Benchmark local Cartão de crédito](benchmark_digital_ocean_credit_card.jpg "Benchmark local Cartão de crédito")
+
+### Criação Boleto
+![Benchmark Digital Ocean Boleto](benchmark_digital_ocean_boleto.jpg "Benchmark Digital Ocean Boleto")
 
 # Desenvolvimento
 Para rodar a aplicação localmente:
