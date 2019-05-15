@@ -19,7 +19,7 @@ Para rodar a aplicação localmente:
 ```shell
 git clone https://github.com/rodrigodata/payment-api.git
 cd payment-api
-docker-compose build --no-cache & docker-compose up
+docker-compose build --no-cache & docker-compose up --build --force-recreate
 ```
 Para acessar a página de checkout, acesse `localhost:8080` em seu navegador.
 

@@ -4,66 +4,46 @@ require("module-alias/register");
 /* Import Dependencies */
 const express = require("express");
 const compression = require("compression");
-const cluster = require("cluster");
 const cors = require("cors");
 const { urlencoded, json } = require("body-parser");
 const { errors } = require("celebrate");
 const helmet = require("helmet");
 
-/* Clustering our express application */
-if (cluster.isMaster) {
-  const cpus = require("os").cpus();
-  cpus.forEach(function() {
-    cluster.fork();
-  });
+/* Express init */
+const app = express();
 
-  // Workers will emit an 'online' event when they spawn
-  cluster.on("online", function(worker) {
-    console.info("Worker " + worker.id + " is online.");
-  });
+app.use(compression());
+app.use(helmet());
 
-  // Workers will emit an 'exit' event when they exit
-  cluster.on("exit", function(worker, code, signal) {
-    console.info("Worker " + worker.id + " died with code " + code + ".");
-    cluster.fork();
-  });
-} else {
-  /* Express init */
-  const app = express();
+/* Import Middlewares */
+const ErrorHandlingMiddleware = require("@middlewares/ErrorHandling");
 
-  app.use(compression());
-  app.use(helmet());
+/* Disable headers etag and x-powered-by. { SECURITY & PERFORMANCE } */
+app.disable("etag").disable("etag");
 
-  /* Import Middlewares */
-  const ErrorHandlingMiddleware = require("@middlewares/ErrorHandling");
+/* Express configuration */
+app.use(cors());
+app.use(urlencoded({ extended: false }));
+app.use(json());
 
-  /* Disable headers etag and x-powered-by. { SECURITY & PERFORMANCE } */
-  app.disable("etag").disable("etag");
+/* Database configuration */
+require("./database");
 
-  /* Express configuration */
-  app.use(cors());
-  app.use(urlencoded({ extended: false }));
-  app.use(json());
+/* Import Models */
+require("./app/models");
 
-  /* Database configuration */
-  require("./database");
+/* Routes configuration */
+app.use(require("./app/routes"));
 
-  /* Import Models */
-  require("./app/models");
+/* Register middleware for Joi validation */
+app.use(errors());
 
-  /* Routes configuration */
-  app.use(require("./app/routes"));
+/* Middleware to custom error handling */
+app.use(ErrorHandlingMiddleware.error);
 
-  /* Register middleware for Joi validation */
-  app.use(errors());
+/* Bootstrap application */
+var server = app.listen(process.env.PORT || 3000, function() {
+  console.log("Escutando na porta " + server.address().port);
+});
 
-  /* Middleware to custom error handling */
-  app.use(ErrorHandlingMiddleware.error);
-
-  /* Bootstrap application */
-  var server = app.listen(process.env.PORT || 3000, function() {
-    console.log("Escutando na porta " + server.address().port);
-  });
-
-  module.exports = app;
-}
+module.exports = app;
